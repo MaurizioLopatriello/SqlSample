@@ -1,21 +1,21 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-
+import java.sql.*;
 
 public class SqlClass {
 
     public static void main(String[] args) {
+        try {
 
-            // create a new connection from MySQLJDBCUtil
-            try (Connection connection =  MYJDBC.getConnection()) {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/newdb", "dev1", "dev1");
 
-                // print out a message
-                System.out.println(String.format("Connected to database %s "
-                        + "successfully.", connection.getCatalog()));
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("select * from students");
+
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("first_name" )+ " " + resultSet.getString("last_name"));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+}
